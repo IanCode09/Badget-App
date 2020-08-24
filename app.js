@@ -1,12 +1,12 @@
 // BUDGET CONTROLLER
-let budgetController = (function() {
+let budgetController = (function () {
 
 })()
 
 
 
 // UI CONTROLLER
-let UIController = (function() {
+let UIController = (function () {
 
     //Private
     let DOMstrings = {
@@ -15,44 +15,55 @@ let UIController = (function() {
         inputValue: '.add__value',
         inputButton: '.add__btn'
     }
-    
+
     return {
-        getInput: function() {
+        getInput: function () {
             return {
                 type: document.querySelector(DOMstrings.inputType).value,
                 descriptio: document.querySelector(DOMstrings.inputDescription).value,
                 value: document.querySelector(DOMstrings.inputValue).value
-            }            
+            }
         },
 
         //DOMstring menjadi public
-        getDomstrings: function() {
+        getDomstrings: function () {
             return DOMstrings;
         }
     }
-    
+
 })()
 
 
 
 // GLOBAL APP CONTROLLER
-let controller = (function(budgetCtrl, UICtrl) {
+let controller = (function (budgetCtrl, UICtrl) {
 
-    let DOM = UICtrl.getDomstrings();   //panggil getDomstrings dari UI Controller
+    let setupEventListener = function () {
+        let DOM = UICtrl.getDomstrings();           //panggil getDomstrings dari UI Controller
 
-    let ctrlAddItem = function() {
-
-        // 1. Get the field input data
-        let input = UICtrl.getInput()   
-        console.log(input);
+        document.querySelector(DOM.inputButton).addEventListener('click', ctrlAddItem)
+        document.addEventListener('keypress', function (event) {
+            if (event === 13 || event.which === 13) {
+                ctrlAddItem()
+            }
+        })
 
     }
 
-    document.querySelector(DOM.inputButton).addEventListener('click', ctrlAddItem)
-    document.addEventListener('keypress', function(event) {
-        if(event === 13 || event.which ===13) {
-            ctrlAddItem()
+    let ctrlAddItem = function () {
+
+        // 1. Get the field input data
+        let input = UICtrl.getInput()
+         
+    }
+
+    return {
+        init: function() {
+            console.log('Application has started');
+            setupEventListener()
         }
-    })
-    
-})(budgetController, UIController)
+    }
+
+})(budgetController, UIController)  
+
+controller.init();
